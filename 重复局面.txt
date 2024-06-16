@@ -52,4 +52,5 @@ int main()
 	
 	for (int i = 0; i < n; i++)
 		cout << p[i].cnt << endl;
+//手工对 B2 上的某些文件修改1
 }
