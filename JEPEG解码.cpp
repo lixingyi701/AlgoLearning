@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 //大模拟 读入数据 数学库调用
-//C4 modify 1
+//B3 modify 1
 int q[8][8];
 int m[8][8];
 double cosm[8][8];

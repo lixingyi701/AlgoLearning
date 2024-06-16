@@ -5,7 +5,7 @@ using namespace std;
 //原因：测试样例 填入蛇形数组的时候 没有填满
 //其他模块正确
 
-//C4 modify 2
+//B3 modify 2
 
 int q[8][8];
 int m[8][8];
