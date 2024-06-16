@@ -1,0 +1,147 @@
+//把int全改成long long，得35分
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<queue>
+using namespace std;
+
+typedef pair< long long, vector<long long>> myStru;
+const long long  mod = 998244353;
+long long  cnt = 1;
+
+//发现cnt在 初始的指令集中没有用，只在放入deque的时候有用
+
+vector<long long> martix(vector<long long>a, vector<long long> b)
+{
+	vector<long long>res;
+	long long  a11 = a[0], a12 = a[1], a21 = a[2], a22 = a[3];
+	long long  b11 = b[0], b12 = b[1], b21 = b[2], b22 = b[3];
+	long long  c11, c12, c21, c22;
+	c11 = (a11 * b11 + a12 * b21) % mod;
+	c12 = (a11 * b12 + a12 * b22) % mod;
+	c21 = (a21 * b11 + a22 * b21) % mod;
+	c22 = (a21 * b12 + a22 * b22) % mod;
+	res = { c11,c12,c21,c22 };
+	return res;
+}
+
+int  main()
+{
+	deque < myStru> d; //分别存储cnt（插入次序）和具体矩阵
+	vector < myStru > v;//分别存储format和具体矩阵
+
+	//pair<long long, vector<long long> >中long long代表插入次序，vector<long long>存储矩阵
+
+	long long  n, m; cin >> n >> m;
+	while (n--)
+	{
+		long long  format; cin >> format;
+		if (format == 1 || format == 2) //插入头部或尾部，但在初始指令集中没有差别
+		{
+			long long  a11, a12, a21, a22;
+			cin >> a11 >> a12 >> a21 >> a22;
+			vector<long long> temp = { a11 ,a12,a21 ,a22 };
+
+			myStru p = { format , temp };
+			v.push_back(p);
+		}
+
+		else //删除最晚被插入的矩阵
+		{
+			vector<long long>temp;
+			myStru  p = { format , temp };
+			v.push_back(p);
+		}
+	}
+
+	while (m--)
+	{
+		long long  format; cin >> format;
+		if (format == 1)
+		{
+			//更新指令
+			long long  pos; cin >> pos;
+
+			long long  format; cin >> format;
+			if (format == 1 || format == 2) //更新为 插入头部
+			{
+				long long  a11, a12, a21, a22;
+				cin >> a11 >> a12 >> a21 >> a22;
+				vector<long long> temp = { a11 ,a12,a21 ,a22 };
+
+
+				myStru  p = { format , temp };
+				v[pos - 1] = p;
+			}
+
+			else //更新为 删除最晚被插入的矩阵
+			{
+				vector<long long>temp;
+
+				myStru  p = { format , temp };
+				v[pos - 1] = p;
+			}
+
+		}
+		else
+		{
+			//矩阵运算，求出密码
+			long long  l, r;
+			cin >> l >> r;
+			for (long long i = l - 1; i <= r - 1; i++)
+			{
+				//在这里构造deque,之后才能进行运算
+				myStru  p = v[i];
+				long long  format = p.first;
+				vector<long long> v = p.second;
+				//c了，如果有连续删除，一个 long long  lastFormat 就不够用了
+				//Init cnt=1
+				if (format == 1)
+				{
+					d.push_front({ cnt,v });
+					cnt++;
+				}
+				else if (format == 2)
+				{
+					d.push_back({ cnt,v });
+					cnt++;
+				}
+				else
+				{
+					//需要删除 最晚被插入的矩阵,要么是 d 的队头要么是 d 的队尾
+					if (d.empty())
+						continue;
+					else
+					{
+						long long  pf = d.front().first;
+						long long  pe = d.back().first;
+						if (pf > pe)
+							d.pop_front();
+						else
+							d.pop_back();
+					}
+				}
+			}
+
+
+			if (d.empty())
+			{
+				cout << 1 << " " << 0 << " " << 0 << " " << 1 << endl;
+				continue;
+			}
+			else
+			{
+				//开始计算
+				vector<long long>res = { 1,0,0,1 };
+				for (auto i = d.begin(); i != d.end(); i++)
+				{
+					res = martix(res, (*i).second);
+				}
+				cout << res[0] << " " << res[1] << " " << res[2] << " " << res[3] << endl;
+			}
+		}
+		d.clear();
+	}
+
+
+}

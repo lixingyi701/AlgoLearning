@@ -1,0 +1,35 @@
+//202312-1	仓库规划 写的太乱了
+#include<iostream>
+using namespace std;
+int main() {
+	int n; int m;
+	cin >> n >> m;
+	int a[1010][11];
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			cin >> a[i][j];
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		//全满足--可以，其中有一个不满足--不行
+		bool flag = 1;
+		for (int j = 0; j < n ; j++) {
+			if (j == i) continue;
+			for (int k = 0; k < m; k++) {
+				flag = 1;//在下一个仓库判断前重置flag
+				if (a[i][k] >= a[j][k]) {
+					flag = 0;
+					break;
+				}
+			}
+			if (flag) {
+				cout << j+1 << endl;
+				break;
+			}
+		}
+		if (!flag) {
+			cout << 0 << endl;
+		}
+	}
+}
