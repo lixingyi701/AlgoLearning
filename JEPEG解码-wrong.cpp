@@ -4,6 +4,9 @@ using namespace std;
 //错误：填入蛇形数组的时候没有看清真正的走势
 //原因：测试样例 填入蛇形数组的时候 没有填满
 //其他模块正确
+
+//C4 modify 2
+
 int q[8][8];
 int m[8][8];
 double cosm[8][8];

@@ -21,6 +21,7 @@ struct base_expr
 	bool b; //1 为需要相等 0 为不等
 	
 };
+//C4 modify 4
 map<string, base_expr>atom_map;//通过 string 映射，不用重复计算，应该只放原子级的
 				
 bool atom(user u,string s)
